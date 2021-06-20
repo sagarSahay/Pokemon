@@ -7,10 +7,17 @@ namespace Pokemon.API.Controllers
 
     public class PokemonController : Controller
     {
+        private readonly IPokemon _pokemon;
+
+        public PokemonController(IPokemon pokemon)
+        {
+            _pokemon = pokemon;
+        }
         [HttpGet]
         public async Task<IActionResult> BasicInformation(PokemonRequest request)
         {
-            return new OkObjectResult(new PokemonResponse() {Name = "metwo"});
+            var result = await _pokemon.GetBasicInformation(request.Name);
+            return new OkObjectResult(result);
         }
     }
 }

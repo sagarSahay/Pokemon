@@ -26,11 +26,17 @@ namespace Pokemon.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient("basicInformation", c =>
+            {
+                c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon-species/");
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pokemon.API", Version = "v1"});
             });
+
+            services.AddSingleton<IPokemon, Pokemon>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
