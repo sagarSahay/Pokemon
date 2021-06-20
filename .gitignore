@@ -1,0 +1,7 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+/.idea/.idea.Pokemon/.idea/indexLayout.xml
+/.idea/.idea.Pokemon/.idea/vcs.xml
