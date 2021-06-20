@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace Pokemon.API
@@ -30,13 +24,24 @@ namespace Pokemon.API
             {
                 c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon-species/");
             });
+
+            services.AddHttpClient("yodaTranslation", c =>
+            {
+                c.BaseAddress = new Uri("https://api.funtranslations.com/translate/yoda.json");
+            });
+
+            services.AddHttpClient("shakespeareTranslation", c =>
+            {
+                c.BaseAddress = new Uri("https://api.funtranslations.com/translate/shakespeare.json");
+            });
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pokemon.API", Version = "v1"});
             });
 
-            services.AddSingleton<IPokemon, Pokemon>();
+            services.AddSingleton<IPokemonService, PokemonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,33 +1,21 @@
 namespace Pokemon.API.Tests
 {
-    using System;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using Controllers;
     using Microsoft.AspNetCore.Mvc;
     using Models;
     using NUnit.Framework;
 
-    public sealed class DefaultHttpClientFactory : IHttpClientFactory
-    {
-        private HttpClient client;
-        public HttpClient CreateClient(string name)
-        {
-            client = new HttpClient();
-            client.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon-species/");
-            return client;
-        }
-    }
     [TestFixture]
     public class PokemonControllerTests
     {
         private PokemonController _sut;
-        private IPokemon _pokemon;
+        private IPokemonService _pokemon;
         
         [SetUp]
         public void SetUp()
         {
-            _pokemon = new Pokemon(new DefaultHttpClientFactory());
+            _pokemon = new PokemonService(new DefaultHttpClientFactory());
             _sut = new PokemonController(_pokemon);
         }
 
@@ -50,6 +38,26 @@ namespace Pokemon.API.Tests
             Assert.AreEqual("", pokemonBasicInfo.Habitat);
             Assert.AreEqual(false, pokemonBasicInfo.Is_Legendary);
         }
-        
+
+
+        [Test]
+        public async Task Translated_information_endpoint_when_receives_pokemon_name_which_is_legendary_returns_yoda_translation()
+        {
+            // Arrange
+            var pokemonName = "mewtwo";
+            
+            // Act
+            var result =  await _sut.TranslatedInformation(new PokemonRequest(){Name = pokemonName});
+
+            var okObjectresult = result as OkObjectResult;
+
+            var pokemonBasicInfo = (PokemonResponse) okObjectresult.Value;
+            
+            // Assert
+            Assert.AreEqual("mewtwo", pokemonBasicInfo.Name);
+            Assert.AreEqual("Created by a scientist after years of horrific gene splicing and dna engineering experiments,  it was.", pokemonBasicInfo.Description);
+            Assert.AreEqual("rare", pokemonBasicInfo.Habitat);
+            Assert.AreEqual(true, pokemonBasicInfo.Is_Legendary);
+        }
     }
 }
