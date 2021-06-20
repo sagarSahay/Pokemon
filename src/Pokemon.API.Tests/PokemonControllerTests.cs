@@ -31,7 +31,6 @@ namespace Pokemon.API.Tests
             _sut = new PokemonController(_pokemon);
         }
 
-
         [Test]
         public async Task Basic_information_endpoint_when_receives_pokemon_name_returns_basic_information()
         {
@@ -47,7 +46,7 @@ namespace Pokemon.API.Tests
             
             // Assert
             Assert.AreEqual("wormadam", pokemonBasicInfo.Name);
-            Assert.AreEqual("Forms have different stats and movepools.  During evolution, Burmy's current cloak becomes Wormadam's form, and can no longer be changed.", pokemonBasicInfo.Description);
+            Assert.AreEqual("When BURMY evolved, its cloak\nbecame a part of this Pokémon’s\nbody. The cloak is never shed.", pokemonBasicInfo.Description);
             Assert.AreEqual("", pokemonBasicInfo.Habitat);
             Assert.AreEqual(false, pokemonBasicInfo.Is_Legendary);
         }

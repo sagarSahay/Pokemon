@@ -34,7 +34,7 @@ namespace Pokemon.API
             await using var responseStream = await response.Content.ReadAsStreamAsync();
             var rawPokemonResponse = await JsonSerializer.DeserializeAsync<PokemonApiResponse>(responseStream);
 
-            result.Description = rawPokemonResponse.form_descriptions[0].description;
+            result.Description = rawPokemonResponse.flavor_text_entries[0].flavor_text;
             result.Habitat = rawPokemonResponse.habitat?.name ?? string.Empty;
             result.Is_Legendary = rawPokemonResponse.is_legendary;
             result.Name = rawPokemonResponse.name;
@@ -47,12 +47,13 @@ namespace Pokemon.API
             public string name { get; set; }
             public bool is_legendary { get; set; }
             public NamedResource? habitat { get; set; }
-            public IList<Description> form_descriptions { get; set; }
+            public IList<FlavorText> flavor_text_entries { get; set; }
         }
-        private class Description
+        private class FlavorText
         {
-            public string description { get; set; }
+            public string flavor_text { get; set; }
             public NamedResource language { get; set; }
+            public NamedResource version { get; set; }
         }
 
         private class NamedResource
