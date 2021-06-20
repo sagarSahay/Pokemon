@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Pokemon.API.Controllers
 {
     using System.Threading.Tasks;
-    using Models;
 
     public class PokemonController : Controller
     {
@@ -15,18 +14,26 @@ namespace Pokemon.API.Controllers
         }
         
         [HttpGet]
-        
-        public async Task<IActionResult> BasicInformation(PokemonRequest request)
+        [Route("/{pokemonName}")]
+        public async Task<IActionResult> BasicInformation(string pokemonName)
         {
-            var result = await _pokemon.GetBasicInformation(request.Name);
+            if (string.IsNullOrWhiteSpace(pokemonName))
+            {
+                return new BadRequestResult();
+            }
+            var result = await _pokemon.GetBasicInformation(pokemonName);
             return new OkObjectResult(result);
         }
 
         [HttpGet]
         [Route("/translated/{pokemonName}")]
-        public async Task<IActionResult> TranslatedInformation(PokemonRequest request)
+        public async Task<IActionResult> TranslatedInformation(string pokemonName)
         {
-            var result = await _pokemon.GetTranslatedInformation(request.Name);
+            if (string.IsNullOrWhiteSpace(pokemonName))
+            {
+                return new BadRequestResult();
+            }
+            var result = await _pokemon.GetTranslatedInformation(pokemonName);
             return new OkObjectResult(result);
         }
     }
