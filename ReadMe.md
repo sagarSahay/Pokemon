@@ -35,4 +35,6 @@ There is also an integration test project which tests all the happy case scenari
 
 - The various end points to get the basic information and get translation data are at the moment hardcoded, I would have like to move this information to the configuartion file.
 
+- The transaltion end points in the free version are rate limited, I have not done any rate limiting at application to stop that from exceeding the rate limit. One way to do this in production would be monitor the number of request coming in and putting rate limiting at the load balancer level.
+
 - If the service is to be scaled for millions of users then some kind of caching strategy can be thought of which caches all the pokemon information and retreives basic information from the cache. In this scenario we can delegate fetching of basic information to another service.
