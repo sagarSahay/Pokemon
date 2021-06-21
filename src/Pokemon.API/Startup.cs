@@ -20,28 +20,26 @@ namespace Pokemon.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient("basicInformation", c =>
-            {
-                c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon-species/");
-            });
-
-            services.AddHttpClient("yodaTranslation", c =>
-            {
-                c.BaseAddress = new Uri("https://api.funtranslations.com/translate/yoda.json");
-            });
-
-            services.AddHttpClient("shakespeareTranslation", c =>
-            {
-                c.BaseAddress = new Uri("https://api.funtranslations.com/translate/shakespeare.json");
-            });
-            
+            RegisterNamedHttpClients(services);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pokemon.API", Version = "v1"});
             });
 
-            services.AddSingleton<IPokemonService, PokemonService>();
+            services.AddScoped<IPokemonService, PokemonService>();
+        }
+
+        private static void RegisterNamedHttpClients(IServiceCollection services)
+        {
+            services.AddHttpClient("basicInformation",
+                c => { c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon-species/"); });
+
+            services.AddHttpClient("yodaTranslation",
+                c => { c.BaseAddress = new Uri("https://api.funtranslations.com/translate/yoda.json"); });
+
+            services.AddHttpClient("shakespeareTranslation",
+                c => { c.BaseAddress = new Uri("https://api.funtranslations.com/translate/shakespeare.json"); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +52,7 @@ namespace Pokemon.API
             
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon.API v1"));
-
-            //app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();

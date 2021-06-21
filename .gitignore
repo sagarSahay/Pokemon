@@ -8,3 +8,6 @@ riderModule.iml
 /Pokemon.sln.DotSettings.user
 /.vscode/launch.json
 /.vscode/tasks.json
+
+.fake
+.ionide

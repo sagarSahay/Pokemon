@@ -1,9 +1,34 @@
 # Pokemon
 
+This provides an API to query for Pokemon information.
+
 ## Overview
 
-## My assumptions
+There are two end points:
 
-## Further enhancements needed
+1. /pokemon/{pokemonName}
+2. /pokemon/translated/{pokemonName}
 
+## Instructions on how to run
 
+After cloning the project , step inside the root folder where the .sln file is in and in the terminal/command prompt type `docker-compose up --build --abort-on-container-exit`
+
+The application starts up on port 9001.
+
+Use this link in your browser to navigate to the swagger page.
+
+`http://localhost:9001/swagger/index.html`
+
+## Implementation details
+
+I have tried to keep it simple. When a request comes to either of the end points it is then handed off to the PokemonSerivce class to deal with it.
+
+I have added minimal logging mainly for error conditions.
+
+There is also an integration test project which tests all the happy case scenarios.
+
+## Further enhancements needed for Production env
+
+- A heart beat end point to know if the service is up.
+- Adding scripts to run the tests and adding more tests for edge cases.
+- If the service is to be scaled for millions of users then some kind of caching strategy can be thought of which caches all the pokemon information and retreives basic information from the cache. In this scenario we can delegate fetching of basic information to another service.

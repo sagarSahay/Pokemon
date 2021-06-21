@@ -3,7 +3,9 @@ namespace Pokemon.API.Integration.Tests
     using System.Threading.Tasks;
     using Controllers;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Models;
+    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
@@ -11,11 +13,13 @@ namespace Pokemon.API.Integration.Tests
     {
         private PokemonController _sut;
         private IPokemonService _pokemon;
+        private Mock<ILogger<PokemonService>> _logger;
         
         [SetUp]
         public void SetUp()
         {
-            _pokemon = new PokemonService(new DefaultHttpClientFactory());
+            _logger = new Mock<ILogger<PokemonService>>();
+            _pokemon = new PokemonService(new DefaultHttpClientFactory(), _logger.Object);
             _sut = new PokemonController(_pokemon);
         }
 

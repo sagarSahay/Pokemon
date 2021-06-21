@@ -6,6 +6,7 @@ namespace Pokemon.API
     using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.WebUtilities;
+    using Microsoft.Extensions.Logging;
     using Models;
 
     public class PokemonService : IPokemonService
@@ -16,13 +17,16 @@ namespace Pokemon.API
         private const string Cave = "cave";
 
         private readonly IHttpClientFactory _clientFactory;
+        private readonly ILogger _logger;
 
-        public PokemonService(IHttpClientFactory clientFactory)
+        public PokemonService(IHttpClientFactory clientFactory,ILogger<PokemonService> logger)
         {
             _clientFactory = clientFactory;
+            _logger = logger;
         }
         public async Task<PokemonResponse> GetBasicInformation(string pokemonName)
         {
+            
             var result = new PokemonResponse();
             var request = new HttpRequestMessage(HttpMethod.Get, $"{pokemonName}");
 
@@ -30,7 +34,11 @@ namespace Pokemon.API
 
             var response = await client.SendAsync(request);
 
-            if (!response.IsSuccessStatusCode) return result;
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("Pokemon information not found");
+                return result;
+            }
             await using var responseStream = await response.Content.ReadAsStreamAsync();
             var rawPokemonResponse = await JsonSerializer.DeserializeAsync<PokemonApiResponse>(responseStream);
 
@@ -46,6 +54,11 @@ namespace Pokemon.API
         {
             var basicInformation = await GetBasicInformation(pokemonName);
 
+            if (string.IsNullOrWhiteSpace(basicInformation.Name))
+            {
+                _logger.LogError("Pokemon information not found");
+                return new PokemonResponse();
+            }
             try
             {
                 if (basicInformation.Habitat == Cave || basicInformation.Is_Legendary)
@@ -59,6 +72,7 @@ namespace Pokemon.API
             }
             catch (Exception e)
             {
+                _logger.LogError(e,"Error with translation , will return basic information");
                 return basicInformation;
             }
         }
