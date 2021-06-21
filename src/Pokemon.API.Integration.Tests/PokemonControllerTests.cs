@@ -1,4 +1,4 @@
-namespace Pokemon.API.Tests
+namespace Pokemon.API.Integration.Tests
 {
     using System.Threading.Tasks;
     using Controllers;

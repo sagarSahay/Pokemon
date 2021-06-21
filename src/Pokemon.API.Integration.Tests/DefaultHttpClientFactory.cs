@@ -1,4 +1,4 @@
-namespace Pokemon.API.Tests
+namespace Pokemon.API.Integration.Tests
 {
     using System;
     using System.Net.Http;

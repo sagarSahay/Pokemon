@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.API.Tests", "src\Pokemon.API.Tests\Pokemon.API.Tests.csproj", "{A1602A2F-C783-422B-BA32-A2AF59A1B5B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.API.Integration.Tests", "src\Pokemon.API.Integration.Tests\Pokemon.API.Integration.Tests.csproj", "{A1602A2F-C783-422B-BA32-A2AF59A1B5B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.API", "src\Pokemon.API\Pokemon.API.csproj", "{A8C9FA1C-7D52-472B-9FDD-47EA2413423F}"
 EndProject
