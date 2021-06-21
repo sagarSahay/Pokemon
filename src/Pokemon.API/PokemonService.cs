@@ -10,6 +10,11 @@ namespace Pokemon.API
 
     public class PokemonService : IPokemonService
     {
+        private const string YodaClientName = "yodaTranslation";
+        private const string ShakespeareClientName = "shakespeareTranslation";
+        private const string PokemonClientName = "basicInformation";
+        private const string Cave = "cave";
+
         private readonly IHttpClientFactory _clientFactory;
 
         public PokemonService(IHttpClientFactory clientFactory)
@@ -21,7 +26,7 @@ namespace Pokemon.API
             var result = new PokemonResponse();
             var request = new HttpRequestMessage(HttpMethod.Get, $"{pokemonName}");
 
-            var client = _clientFactory.CreateClient("basicInformation");
+            var client = _clientFactory.CreateClient(PokemonClientName);
 
             var response = await client.SendAsync(request);
 
@@ -43,13 +48,13 @@ namespace Pokemon.API
 
             try
             {
-                if (basicInformation.Habitat == "cave" || basicInformation.Is_Legendary)
+                if (basicInformation.Habitat == Cave || basicInformation.Is_Legendary)
                 {
-                    return await GetTranslation(basicInformation,"yodaTranslation");
+                    return await GetTranslation(basicInformation,YodaClientName);
                 }
                 else
                 {
-                    return await GetTranslation(basicInformation, "shakespeareTranslation");
+                    return await GetTranslation(basicInformation, ShakespeareClientName);
                 }
             }
             catch (Exception e)
@@ -82,10 +87,6 @@ namespace Pokemon.API
 
             return basicInformation;
         }
-        /*
-         *https://api.funtranslations.com/translate/yoda.json?text=It%20was%20created%20by%0Aa%20scientist%20after%0Ayears%20of%20horrific%0Cgene%20splicing%20and%0ADNA%20engineering%0Aexperiments.
-         *https://api.funtranslations.com/translate/yoda.json?text=You%20gave%20Mr.%20Tim%20a%20hearty%20meal%2C%20but%20unfortunately%20what%20he%20ate%20made%20him%20die.
-         */
 
         #region Translation models
 
